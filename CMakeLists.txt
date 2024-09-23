@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(CP3P_Homography_IJCV)
+project(CP3P_Homography)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_RELEASE " -O3 -march=native -mtune=native -DNDEBUG")
@@ -29,7 +29,7 @@ list(APPEND cost_function-src cost_function/cost_function.h)
 find_package(Ceres REQUIRED)
 include_directories(${CERES_INCLUDE_DIRS})
 
-add_executable(CP3P_Homography_IJCV
+add_executable(CP3P_Homography
         P3P_HD.h
         demo_P3P.cpp
         demo_Ransac.cpp
@@ -41,4 +41,4 @@ add_executable(CP3P_Homography_IJCV
         ${cost_function-src}
         ${util-src}
 )
-target_link_libraries(CP3P_Homography_IJCV ${CERES_LIBRARIES})
+target_link_libraries(CP3P_Homography ${CERES_LIBRARIES})

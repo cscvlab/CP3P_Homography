@@ -14,7 +14,6 @@ int updateNumIters(double p, double ep, int niters,int sample_nums) {
     ep = max(ep, 0.);
     ep = min(ep, 1.);
 
-    //置信度
     double num = log(1-p);
     double denom = 1 - pow(ep,sample_nums);
 
@@ -304,11 +303,8 @@ int demo_Ransac(hd::P3P_methods methods_id, bool EPNP, bool Ceres) {
 #endif // CERES_VERSION_MAJOR
 
        ceres::Solver::Summary summary;
-       //            auto start_Ceres=std::chrono::high_resolution_clock ::now();
+
        ceres::Solve(solver_options, &problem, &summary);
-       //            auto end_Ceres=std::chrono::high_resolution_clock ::now();
-       //            auto duration_Ceres=std::chrono::duration_cast<std::chrono::nanoseconds>(end_Ceres-start_Ceres);
-       //            Ceres_time_array.push_back(duration_Ceres.count());
 
        Eigen::Matrix3x4d transform_matrix = cam_from_world->ToMatrix();
        Eigen::Matrix<double, 3, 3> ceres_Rs;

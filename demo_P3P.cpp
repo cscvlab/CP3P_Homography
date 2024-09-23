@@ -1,6 +1,5 @@
 #include<iostream>
 #include "P3P_HD.h"
-// #include "utils/matrix.h"
 #include "demo_P3P.h"
 #include <Eigen/Core>
 using namespace std;
