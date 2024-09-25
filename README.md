@@ -7,28 +7,19 @@ Concise Perspective-3-Point (CP3P) is a novel pose estimation method based on 2D
 
 **Links:** [[Project Page]](http://www.cscvlab.com/research/CP3P/)   
 
-## Main Results
-FLOPs
-
-Accuracy w.o. noise
-
-Time
-
-RANSAC
-
 ## Codes Explanation
 ### Project Structure Overview
 
-| File/Directory name        |                                                                                                                                                                                  Description                                                                                                                                                                                  |  
-|----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| P3P_HD.h                   |                                                                                                                   Our algorithm for solving the p3p problem, utilizing 4 and 3 point correspondences to compute a unique or multiple pose(s), respectively.                                                                                                                   |
-| demo_P3P.cpp               |                                                                                                                            A demo we provided for running all variants of our P3P method, including 'Mul-4', 'Mul-3', 'Uni-3-1V', and 'Uni-3-3V'.                                                                                                                             |
-| demo_Ransac.cpp            |                                                                                    A demo we provided for running the RANSAC-based pose estimation process, allowing selection of different P3P solvers(Mul4, Mul3, Uni-3-1V, Uni-3-3V ), and optional use of EPNP and Ceres optimization.                                                                                    |
-| utils/functionSolver.h     |           Methods for solving cubic equations based on a modified approach from Ding and Yang's paper "Homography-Based Minimal-Case Relative Pose Estimation With Known Gravity Direction" in PAMI2022 and quartic equations using techniques from Ke and Roumeliotis' paper "An efficient algebraic solution to the perspective-three-point problem" in CVPR2017.|           |
-| utils/EPNP folder          |                                                                    The folder contains functions for solving the Perspective-n-Point problem using the Efficient PnP (EPNP) algorithm from paper "EPnP: An Accurate O(n) Solution to the PnP Problem", which can be optionally used in the RANSAC process.                                                                    |
-| utils/colmap_util folder   |                                                                                             The folder contains utility functions from Colmap (https://github.com/colmap/colmap), used specifically for setting up and running Ceres optimization in the pose estimation process.                                                                                             |
-| utils/cost_function folder |                                                                                                              The cost_function folder includes the objective functions for Ceres optimization, defining the error terms that guide the pose refinement process.                                                                                                               |
-| Cambridge folder           |                                                                             Several sets of data from the Cambridge KingsCollege scene, consisting of image points, corresponding 3D world points, and camera intrinsics, generated following the data preparation pipeline from the hloc paper.                                                                              |
+| File/Directory name        |                                                                                                                                          Description                                                                                                                                           |  
+|----------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| P3P_HD.h                   |                                                                           Our algorithm for solving the p3p problem, utilizing 4 and 3 point correspondences to compute a unique or multiple pose(s), respectively.                                                                            |
+| demo_P3P.cpp               |                                                                                     A demo we provided for running all variants of our P3P method, including 'Mul-4', 'Mul-3', 'Uni-3-1V', and 'Uni-3-3V'.                                                                                     |
+| demo_Ransac.cpp            |                                            A demo we provided for running the RANSAC-based pose estimation process, allowing selection of different P3P solvers(Mul4, Mul3, Uni-3-1V, Uni-3-3V ), and optional use of EPNP and Ceres optimization.                                             |
+| utils/functionSolver.h     | Methods for solving cubic equations based on a modified approach from Ding and Yang's paper "Revisiting the P3P Problem" in CVPR23 and quartic equations using techniques from Ke and Roumeliotis' paper "An efficient algebraic solution to the perspective-three-point problem" in CVPR2017. |           |
+| utils/EPNP folder          |                            The folder contains functions for solving the Perspective-n-Point problem using the Efficient PnP (EPNP) algorithm from paper "EPnP: An Accurate O(n) Solution to the PnP Problem", which can be optionally used in the RANSAC process.                             |
+| utils/colmap_util folder   |                                                     The folder contains utility functions from Colmap (https://github.com/colmap/colmap), used specifically for setting up and running Ceres optimization in the pose estimation process.                                                      |
+| utils/cost_function folder |                                                                       The cost_function folder includes the objective functions for Ceres optimization, defining the error terms that guide the pose refinement process.                                                                       |
+| Cambridge folder           |                Several sets of data from the Cambridge KingsCollege scene, consisting of image points, corresponding 3D world points, and camera intrinsics, generated following the data preparation pipeline from the hloc(https://github.com/cvg/Hierarchical-Localization).                |
 
 ## How to Run the Project
 ### 1. Install Dependencies
