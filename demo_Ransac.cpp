@@ -2,8 +2,8 @@
 #include <fstream>
 #include <random>
 #include "P3P_HD.h"
-#include "EPNP/EPNP.h"
-#include "cost_function/cost_function.h"
+#include "utils/EPNP/EPNP.h"
+#include "utils/cost_function/cost_function.h"
 #include <ceres/ceres.h>
 using namespace std;
 
@@ -22,9 +22,7 @@ int updateNumIters(double p, double ep, int niters,int sample_nums) {
 }
 
 //generate random numbers
-int getRand(int min, int max) {
-
-    std::mt19937_64 generator(static_cast<uint64_t>(std::chrono::system_clock::now().time_since_epoch().count()));
+int getRand(int min, int max, std::mt19937_64 &generator) {
     std::uniform_int_distribution<int> rn(min, max);
     return rn(generator);
 }
@@ -54,16 +52,16 @@ vector<double> loadData(string filePath) {
 // Reference: Colmap repository (https://github.com/colmap/colmap)
 // Our algorithm for Lo_Ransac pipline,where 4 correspondences are sampled in one iteration of Ransac.
 // Replace different methods(Mul4, Mul3, Uni-3-1V, Uni-3-3V ) to solve the P3P problems in the Ransac pipline.
-int demo_Ransac(hd::P3P_methods methods_id, bool EPNP, bool Ceres) {
+int demo_Ransac(hd::P3P_methods methods_id, bool EPNP, bool Ceres, string filePath) {
 
     vector<double> worldPoints;
     vector<double> imagePoints;
     vector<double> Intr;
     vector<double> Pose;
 
-    worldPoints=loadData("../Cambridge/extract_data_ShopFacade_1/world.txt");
-    imagePoints=loadData("../Cambridge/extract_data_ShopFacade_1/image.txt");
-    Intr=loadData("../Cambridge/extract_data_ShopFacade_1/intr.txt");
+    worldPoints=loadData(filePath + "/world.txt");
+    imagePoints=loadData(filePath +"/image.txt");
+    Intr=loadData(filePath +"/intr.txt");
 
     double Intrin[3]={Intr[0],Intr[1],Intr[2]};
 
@@ -73,6 +71,9 @@ int demo_Ransac(hd::P3P_methods methods_id, bool EPNP, bool Ceres) {
     int niter = 2000;
     int maxGoodCount = 0;
     int iter=0;
+    //In order to ensure that the results of multiple runs of the program are consistent, the seed is set to a fixed value here.
+    std::mt19937_64 generator(2024);
+    // std::mt19937_64 generator(static_cast<uint64_t>(std::chrono::system_clock::now().time_since_epoch().count()));
 
     vector<Eigen::Vector2d> Points2D_in_cam;
     vector<Eigen::Vector2d> Points2D;
@@ -101,21 +102,21 @@ int demo_Ransac(hd::P3P_methods methods_id, bool EPNP, bool Ceres) {
     Eigen::Vector3<double> t;
 
     for (iter = 0; iter < niter; iter++) {
-        int r1 = getRand(0, N - 1);
-        int r2 = getRand(0, N - 1);
-        int r3 = getRand(0, N - 1);
-        int r4 = getRand(0, N - 1);
+        int r1 = getRand(0, N - 1,generator);
+        int r2 = getRand(0, N - 1,generator);
+        int r3 = getRand(0, N - 1,generator);
+        int r4 = getRand(0, N - 1,generator);
 
         while (r1 == r2) {
-            r2 = getRand(0, N - 1);
+            r2 = getRand(0, N - 1,generator);
         }
         while (r2 == r3 || r1 == r3) {
-            r3 = getRand(0, N - 1);
+            r3 = getRand(0, N - 1,generator);
         }
         while (r1 == r4 || r2 == r4 || r3==r4) {
-            r4 = getRand(0, N - 1);
+            r4 = getRand(0, N - 1,generator);
         }
-        r1=17,r2=4,r3=5,r4=38;
+
         vector<int> index = {r1, r2, r3, r4};
         double worldPoints_4[12] = {worldPoints[3 * r1], worldPoints[3 * r2], worldPoints[3 * r3], worldPoints[3 * r4],
                                     worldPoints[3 * r1 + 1], worldPoints[3 * r2 + 1], worldPoints[3 * r3 + 1], worldPoints[3 * r4 + 1],

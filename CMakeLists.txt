@@ -6,25 +6,20 @@ set(CMAKE_CXX_FLAGS_RELEASE " -O3 -march=native -mtune=native -DNDEBUG")
 
 #Change to your Eigen package address
 include_directories("./eigen-3.4.0")
-include_directories("./colmap_util")
-
-
-set(epnp-srcs "")
-list(APPEND epnp-srcs EPNP/EPNP.h)
-list(APPEND epnp-srcs EPNP/EPNP.cpp)
-
-set(colmap_util-src "")
-list(APPEND colmap_util-src colmap_util/eigen_alignment.h)
-list(APPEND colmap_util-src colmap_util/models.h)
-list(APPEND colmap_util-src colmap_util/models.cc)
-list(APPEND colmap_util-src colmap_util/types.h)
+include_directories("utils/colmap_util")
 
 set(util-src "")
-list(APPEND util-src utils/quarticSolver.h)
+list(APPEND util-src utils/functionSolver.h)
 
+list(APPEND util-src utils/colmap_util/eigen_alignment.h)
+list(APPEND util-src utils/colmap_util/models.h)
+list(APPEND util-src utils/colmap_util/models.cc)
+list(APPEND util-src utils/colmap_util/types.h)
 
-set(cost_function-src "")
-list(APPEND cost_function-src cost_function/cost_function.h)
+list(APPEND util-src utils/cost_function/cost_function.h)
+
+list(APPEND util-src utils/EPNP/EPNP.h)
+list(APPEND util-src utils/EPNP/EPNP.cpp)
 
 find_package(Ceres REQUIRED)
 include_directories(${CERES_INCLUDE_DIRS})
@@ -36,9 +31,6 @@ add_executable(CP3P_Homography
         main.cpp
         demo_Ransac.h
         demo_P3P.h
-        ${epnp-srcs}
-        ${colmap_util-src}
-        ${cost_function-src}
         ${util-src}
 )
 target_link_libraries(CP3P_Homography ${CERES_LIBRARIES})

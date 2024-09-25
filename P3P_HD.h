@@ -4,7 +4,7 @@
 #include <iostream>
 // #include "utils/matrix.h"
 #include <Eigen/Core>
-#include "utils/quarticSolver.h"
+#include "utils/functionSolver.h"
 
 using namespace std;
 namespace hd {
@@ -215,7 +215,7 @@ namespace hd {
             T f5_1 = d_MN * l_MQ;
             T f6_1 = l_MM * temp_1;
 
-            // 3-4. Remove ambiguous solutions. Flops: 31*m
+            // 3-4. Remove ambiguous solutions. Flops: 29*m
             T min_value = INT32_MAX;
             for (int ii = 0; ii < solu_size; ++ii) {
                 T b_1 = lam1_solu[ii];
