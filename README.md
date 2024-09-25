@@ -17,8 +17,64 @@ Time
 RANSAC
 
 ## Codes Explanation
-Files
+### Project Structure Overview
 
-Run
+| File/Directory name        |                                                                                                                                                                                  Description                                                                                                                                                                                  |  
+|----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| P3P_HD.h                   |                                                                                                                   Our algorithm for solving the p3p problem, utilizing 4 and 3 point correspondences to compute a unique or multiple pose(s), respectively.                                                                                                                   |
+| demo_P3P.cpp               |                                                                                                                            A demo we provided for running all variants of our P3P method, including 'Mul-4', 'Mul-3', 'Uni-3-1V', and 'Uni-3-3V'.                                                                                                                             |
+| demo_Ransac.cpp            |                                                                                    A demo we provided for running the RANSAC-based pose estimation process, allowing selection of different P3P solvers(Mul4, Mul3, Uni-3-1V, Uni-3-3V ), and optional use of EPNP and Ceres optimization.                                                                                    |
+| utils/functionSolver.h     |           Methods for solving cubic equations based on a modified approach from Ding and Yang's paper "Homography-Based Minimal-Case Relative Pose Estimation With Known Gravity Direction" in PAMI2022 and quartic equations using techniques from Ke and Roumeliotis' paper "An efficient algebraic solution to the perspective-three-point problem" in CVPR2017.|           |
+| utils/EPNP folder          |                                                                    The folder contains functions for solving the Perspective-n-Point problem using the Efficient PnP (EPNP) algorithm from paper "EPnP: An Accurate O(n) Solution to the PnP Problem", which can be optionally used in the RANSAC process.                                                                    |
+| utils/colmap_util folder   |                                                                                             The folder contains utility functions from Colmap (https://github.com/colmap/colmap), used specifically for setting up and running Ceres optimization in the pose estimation process.                                                                                             |
+| utils/cost_function folder |                                                                                                              The cost_function folder includes the objective functions for Ceres optimization, defining the error terms that guide the pose refinement process.                                                                                                               |
+| Cambridge folder           |                                                                             Several sets of data from the Cambridge KingsCollege scene, consisting of image points, corresponding 3D world points, and camera intrinsics, generated following the data preparation pipeline from the hloc paper.                                                                              |
 
+## How to Run the Project
+### 1. Install Dependencies
+####   Install Eigen
+Eigen is a C++ template library for linear algebra. You can install it from the source:
+
+```bash
+# Clone the Eigen source code
+git clone https://gitlab.com/libeigen/eigen.git
+cd eigen
+
+# Create a build directory and install
+mkdir build && cd build
+cmake ..
+sudo make install
+```
+#### Install Ceres Solver
+Ceres Solver is a C++ library for solving non-linear least squares problems. You can install it with the following steps:
+
+```bash
+# Install Ceres dependencies
+sudo apt-get install  liblapack-dev libsuitesparse-dev libcxsparse3 libgflags-dev libgoogle-glog-dev libgtest-dev
+
+# Clone the Ceres source code
+git clone https://ceres-solver.googlesource.com/ceres-solver
+cd ceres-solver
+
+# Create a build directory and install
+mkdir build && cd build
+cmake ..
+make -j4
+sudo make install
+```
+### 2. Configure and Build the Project
+In the project’s root directory, run the following commands to generate the Makefile and build the project:
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+### 3. Run the Project
+After building the project, you can run the executable with:
+
+```bash
+./build/CP3P_Homography
+```
 
